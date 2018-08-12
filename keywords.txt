@@ -1,0 +1,30 @@
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+sscp	KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+# sscp
+
+loop	KEYWORD2
+SetOnTransmissionBeginHandler	KEYWORD2
+SetOnTransmissionEndHandler	KEYWORD2
+GetPayload	KEYWORD2
+GetPayloadLength	KEYWORD2
+GetSource	KEYWORD2	
+GetDestination	KEYWORD2	
+GetCommand	KEYWORD2	
+GetType	KEYWORD2	
+IsPacketAvailable	KEYWORD2
+MessageBegin	KEYWORD2
+MessageAdd	KEYWORD2
+MessageSend	KEYWORD2
+ReleasePacket	KEYWORD2
+
+#######################################
+# Constants (LITERAL1)
+#######################################
