@@ -37,7 +37,7 @@ The protocol is pretty straight forward. Every message has the following format:
 **CS** = byte = checksum calculated as follows
 
 ```c++
-  unsigned char payload[16] = "Payload!Payload!"
+  unsigned char payload[16] = "Payload!Payload!";
   unsigned char cs = 0x7f;
   
   for (int i = 0; i < sizeof(payload); i++)
@@ -49,6 +49,9 @@ The protocol is pretty straight forward. Every message has the following format:
 **ETX** = 0x03 = marks end of message
 
 ## Example 
+
+See [here](https://github.com/metaneutrons/sscp/blob/master/examples/sscp_minimal.cpp) for a more advanced example including use of call-back functions.
+
 ```c++
 #include <Arduino.h>
 #include <sscp.h>
@@ -66,10 +69,6 @@ void setup()
 {
     Serial.begin(115200);  // for debug output
     Serial1.begin(115200); // for sscp library
-
-    // set callback handler for eg RS485 tx-enable/disable
-    msg.SetOnTransmissionBeginHandler(TransmissionBegin);
-    msg.SetOnTransmissionEndHandler(TransmissionEnd);
 }
 
 void loop()
@@ -83,14 +82,10 @@ void loop()
         Serial.print(String(millis()) + ": Rcvd packet from " +
                      String(msg.GetSource(), HEX) + " of type " + String(msg.GetType(), HEX));
 
-        Serial.print(" with CMD " + String(msg.GetCommand(), HEX));
-
-        Serial.print(" and payload");
+        Serial.print(" with CMD " + String(msg.GetCommand(), HEX) + " and payload");
 
         for (unsigned short int i = 0; i < msg.GetPayloadLength(); i++)
                          Serial.print(" " + String(msg.GetPayload(i), HEX)));
-
-        Serial.println(".");
 
         // clear RX buffer and avoid processing this packet again
         msg.ReleasePacket();
@@ -102,9 +97,9 @@ void loop()
         // start new message from adr 1 to adr 2 of type CMD with CMD byte set to
         // 0x10 and payload 0xFA 0xB1 0xA4
         msg.MessageBegin(NODE, 2, SSCP_PACKET_TYPE_CMD, 0x10);
-        msg.Add(0xFA);
-        msg.Add(0xB1);
-        msg.Add(0xA4);
+        msg.MessageAdd(0xFA);
+        msg.MessageAdd(0xB1);
+        msg.MessageAdd(0xA4);
         msg.MessageSend();
 
         milli = millis() + 1000; // next tick
